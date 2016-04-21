@@ -1,0 +1,21 @@
+・iTerm, Emacsをcmd+wで閉じないようにする（option+wを押下するときに、間違えて押して閉じることを止めるため）
+システム環境設定＞キーボード＞ショートカット＞アプリケーション
+＋を押下して追加する。
+	アプリケーション:iTerm.app, Emacs.app
+	メニュータイトル:Close
+	キーボードショートカット:ctrl+cmd+w
+
+・Spotligthのショートカットを無効化（crtl+SpaceをEmacsで使うため）
+システム環境設定＞キーボード＞ショートカット＞Spotligth
+ショートカットをすべてオフ。
+
+・MissionControlのショートカットを変更(crtl+矢印をEmacsで使うため)
+システム環境設定＞キーボード＞ショートカット＞MissionControl
+「Mission Control」、「アプリケーションウィンドウ」をオフ
+「MissionControl＞右｜左操作スペースに移動」をctrl+option+矢印に変更
+
+・iTerm2で☆などの全角記号がずれるて表示される問題
+設定の「Text => Unicode => Treat ambigous-width characters as double width」にチェックを入れる。
+さらに Font の Horizontal を90% くらいにすると見やすい。
+
+======

@@ -1,0 +1,17 @@
+! OSX 10.9.5
+! XQuartz 2.7.8
+
+! モディファイアキーをクリア
+clear mod1
+clear mod2
+
+! optionとcommandのキーの役割を入れ替える
+keycode  63 = Mode_switch NoSymbol Mode_switch
+keycode  66 = Meta_L NoSymbol Meta_L
+
+! ￥の入力をバックスラッシュにする
+keycode 101 = backslash bar yen bar
+
+! モディファイアキーにoptionとcommandを設定
+add mod1 = Meta_L Meta_R
+add mod2 = Mode_switch

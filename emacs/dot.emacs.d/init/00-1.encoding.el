@@ -1,0 +1,23 @@
+;; character encoding
+(set-default-coding-systems 'utf-8)
+(set-locale-environment nil)
+(set-language-environment "Japanese")
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-clipboard-coding-system 'utf-8)
+
+(set-default-coding-systems 'sjis-mac)
+(set-locale-environment nil)
+(set-language-environment "Japanese")
+(set-terminal-coding-system 'sjis-mac)
+(set-keyboard-coding-system 'sjis-mac)
+(set-buffer-file-coding-system 'sjis-mac)
+(setq default-buffer-file-coding-system 'sjis-mac)
+(set-default-coding-systems 'sjis-mac)
+(prefer-coding-system 'sjis-mac)
+(set-clipboard-coding-system 'sjis-mac)
+

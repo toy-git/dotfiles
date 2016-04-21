@@ -1,0 +1,2 @@
+[alias]
+	root = rev-parse --show-toplevel

@@ -1,0 +1,46 @@
+#!/bin/sh
+is_os_mac()
+{
+	if [ "$(uname)" == 'Darwin' ]; then
+		return 0
+	fi
+	return 1
+}
+
+is_os_linux()
+{
+	if [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+		return 0
+	fi
+	return 1
+}
+
+
+git rev-parse --is-inside-work-tree >/dev/null
+if [ $? -ne 0 ]; then
+    echo "error: git rev-parse --is-inside-work-tree"
+    return 1
+fi
+root_dir=`git rev-parse --show-toplevel`
+
+emacs_dir="$root_dir/emacs"
+emacs_dot_emacs_d="$emacs_dir/dot.emacs.d"
+
+fonts_dir="$root_dir/fonts"
+
+git_dir="$root_dir/git"
+git_dot_gitconfig="$git_dir/dot.gitconfig"
+
+hg_dir="$root_dir/mercurial"
+hg_dot_hgrc="$hg_dir/dot.hgrc"
+
+osx_dir="$root_dir/osx"
+osx_xmodemap="$osx_dir/x11/dot.Xmodmap"
+
+tmux_dir="$root_dir/tmux"
+tmux_dot_tmux_conf="$tmux_dir/dot.tmux.conf"
+tmux_dot_tmux_dir="$tmux_dir/dot.tmux"
+
+zsh_dir="$root_dir/zsh"
+zsh_dot_zshrc="$zsh_dir/dot.zshrc"
+

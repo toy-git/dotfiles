@@ -1,0 +1,14 @@
+#----------------
+# default window 
+#----------------
+# usage
+#  1) Prefix + :
+#  2) source-file  ~/.tmux/default
+
+new -s dev -n repo -c "/home/toy/repo/master"
+pipe-pane -o '/bin/sh -c "\"${HOME}/.tmux/util/logger/mark.sh\" \"#S\" \"#I\" \"#P\"; while read -r L; do \"${HOME}/.tmux/util/logger/write.sh\" \"\${L}\" \"#S\" \"#I\" \"#P\"; done "'
+
+neww -n sandbox -c "/home/toy/dev/sandbox"
+pipe-pane -o '/bin/sh -c "\"${HOME}/.tmux/util/logger/mark.sh\" \"#S\" \"#I\" \"#P\"; while read -r L; do \"${HOME}/.tmux/util/logger/write.sh\" \"\${L}\" \"#S\" \"#I\" \"#P\"; done "'
+
+select-window -t:1

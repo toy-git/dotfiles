@@ -1,0 +1,32 @@
+[paths]
+#<NAME>=<URI>
+
+[ui]
+#username = <NAME>@<E-MAIL>
+ignore = ~/.hgignore
+editor = emacs
+
+[trusted]
+#users = <USERS>
+#groups = <GROUPS>
+
+[extensions]
+mq =
+rebase =
+color =
+graphlog =
+
+[diff]
+git = True
+showfunc = True
+#ignorews = True
+#ignorewsamount = True
+#ignoreblanklines = True
+
+[mq]
+git = Yes
+
+[color]
+qseries.applied = cyan underline
+qseries.unapplied = green
+qseries.missing = red bold

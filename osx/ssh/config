@@ -1,0 +1,25 @@
+Host name
+     HostName hostname
+     User usename
+     ForwardX11 yes
+     Compression yes
+
+#---
+Host name
+     Hostname hostname
+     User username
+
+Host name2
+	Hostname hostname2
+	User username2
+	ProxyCommand ssh name nc %h %p
+
+#---
+Host name2
+	ProxyCommand ssh user@host -p port -t /path/to/nc %h %p
+
+
+#---
+ServerAliveInterval 300
+
+TCPKeepAlive yes
