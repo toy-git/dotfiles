@@ -31,10 +31,3 @@
       (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/bak"))
             backup-directory-alist))
 
-
-;;
-;; ダイナミックキーボードマクロ(+連番機能)
-;;
-(require 'ndmacro)
-(global-set-key (kbd "C-t") 'ndmacro)
-

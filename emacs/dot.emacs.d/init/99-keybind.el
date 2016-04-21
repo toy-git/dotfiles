@@ -82,3 +82,9 @@
 (global-set-key [delete] 'delete-char)
 (global-set-key [C-delete] 'kill-word)
 
+;;
+;; ダイナミックキーボードマクロ(+連番機能)
+;;
+(require 'ndmacro)
+(global-set-key (kbd "C-t") 'ndmacro)
+
