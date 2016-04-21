@@ -4,8 +4,8 @@ emacs/dot.emacs.d/.recentf
 emacs/dot.emacs.d/auto-save-list
 emacs/dot.emacs.d/bak/*
 emacs/dot.emacs.d/el/*
-emacs/dot.emacs.d/inits/init/*
-!emacs/dot.emacs.d/inits/init/sample
-emacs/dot.emacs.d/inits/xcscope/*
-!emacs/dot.emacs.d/inits/xcscope/samples
+emacs/dot.emacs.d/init/init/*
+!emacs/dot.emacs.d/init/init/sample
+emacs/dot.emacs.d/init/xcscope/*
+!emacs/dot.emacs.d/init/xcscope/samples
 tmux/dot.tmux/log/*
