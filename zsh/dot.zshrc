@@ -115,9 +115,17 @@ alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -a -l'
 
+alias popdall='_popdall'
+function _popdall () {
+	for i in `dirs -v | sed 's|\([0-9]*\).*|\1|g'`
+	do
+		popd >/dev/null 2>&1
+	done
+}
+
 # tmux環境をローカルに入れた場合の設定
-alias tmux='t'
-function t () {
+alias tmux='_tmux'
+function _tmux () {
 	local ld_library_path="${HOME}/usr/local/lib"
 	if [ -d "$ld_library_path" ]; then
 	   ld_library_path=''
@@ -147,9 +155,9 @@ function t () {
 # (unless (server-running-p)
 #   (server-start))
 # ----
-function e () {
-	local emacs=`which emacs`
-	if [ $# -ne 0 ]; then
-		emacsclient -a "$emacs" --no-wait $@ &
-	fi
-}
+#function e () {
+#	local emacs=`which emacs`
+#	if [ $# -ne 0 ]; then
+#		emacsclient -a "$emacs" --no-wait $@ &
+#	fi
+#}
