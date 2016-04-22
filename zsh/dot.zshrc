@@ -117,34 +117,31 @@ alias lla='ls -a -l'
 
 alias popdall='_popdall'
 function _popdall () {
-	for i in `dirs -v | sed 's|\([0-9]*\).*|\1|g'`
-	do
-		popd >/dev/null 2>&1
-	done
+  for i in `dirs -v | sed 's|\([0-9]*\).*|\1|g'`
+  do
+    popd >/dev/null 2>&1
+  done
 }
 
 # tmux環境をローカルに入れた場合の設定
 alias tmux='_tmux'
 function _tmux () {
-	local ld_library_path="${HOME}/usr/local/lib"
-	if [ -d "$ld_library_path" ]; then
-	   ld_library_path=''
-	fi
-	ld_library_path="$ld_library_path:$LD_LIBRARY_PATH"
+  local tmux=`type -p tmux | sed 's|tmux is ||g'`
+  local ld_library_path="${HOME}/usr/local/lib"
+  if [ -d "$ld_library_path" ]; then
+    ld_library_path="$LD_LIBRARY_PATH"
+  else
+    ld_library_path="$ld_library_path:$LD_LIBRARY_PATH"
+  fi
 
-	local tmux="${HOME}/usr/local/bin/tmux"
-	if [ ! -x "${HOME}/usr/local/bin/tmux" ]; then
-	   tmux='tmux'
-	fi
-
-	if [ $# -eq 0 ]; then
-		LD_LIBRARY_PATH="$ld_library_path"		\
-		"$tmux" new-session \;	\
-		pipe-pane -o '/bin/sh -c "\"${HOME}/.tmux/util/logger/mark.sh\" \"#S\" \"#I\" \"#P\"; while read -r L; do \"${HOME}/.tmux/util/logger/write.sh\" \"\${L}\" \"#S\" \"#I\" \"#P\"; done "'
-	else
-		LD_LIBRARY_PATH="$ld_library_path" "$tmux" "$@" \;	\
-		pipe-pane -o '/bin/sh -c "\"${HOME}/.tmux/util/logger/mark.sh\" \"#S\" \"#I\" \"#P\"; while read -r L; do \"${HOME}/.tmux/util/logger/write.sh\" \"\${L}\" \"#S\" \"#I\" \"#P\"; done "'
-	fi
+  if [ $# -eq 0 ]; then
+    LD_LIBRARY_PATH="$ld_library_path"		\
+    "$tmux" new-session \;	\
+    pipe-pane -o '/bin/sh -c "\"${HOME}/.tmux/util/logger/mark.sh\" \"#S\" \"#I\" \"#P\"; while read -r L; do \"${HOME}/.tmux/util/logger/write.sh\" \"\${L}\" \"#S\" \"#I\" \"#P\"; done "'
+  else
+    LD_LIBRARY_PATH="$ld_library_path" "$tmux" "$@" \;	\
+    pipe-pane -o '/bin/sh -c "\"${HOME}/.tmux/util/logger/mark.sh\" \"#S\" \"#I\" \"#P\"; while read -r L; do \"${HOME}/.tmux/util/logger/write.sh\" \"\${L}\" \"#S\" \"#I\" \"#P\"; done "'
+  fi
 }
 
 # 起動済みのemacsを使ってファイルを開く
