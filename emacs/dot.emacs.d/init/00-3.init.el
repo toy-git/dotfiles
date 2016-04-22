@@ -8,8 +8,9 @@
 ;; emacs server
 ;;
 (require 'server)
-(unless (server-running-p)
-  (server-start))
+(setq server-socket-dir "~/.emacs.d/server")
+;(unless (server-running-p)  
+;  (server-start))   <= サーバ名をユニークにするため。起動時の引き数で --eval してstart-serverする。.zshrc参照。
 
 ;;
 ;; C-Ret で矩形選択

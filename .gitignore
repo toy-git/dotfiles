@@ -2,6 +2,7 @@
 .DS_store
 emacs/dot.emacs.d/.recentf
 emacs/dot.emacs.d/auto-save-list
+emacs/dot.emacs.d/server
 emacs/dot.emacs.d/bak/*
 emacs/dot.emacs.d/el/*
 emacs/dot.emacs.d/init/init/*

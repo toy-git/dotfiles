@@ -148,16 +148,25 @@ function _tmux () {
 }
 
 # 起動済みのemacsを使ってファイルを開く
-# emacsが起動していない場合は、emacsを起動する(-aオプション)
 # emacs設定に下記の記載が必要
 # ----
 # (require 'server)
-# (unless (server-running-p)
-#   (server-start))
 # ----
-#function e () {
-#	local emacs=`which emacs`
-#	if [ $# -ne 0 ]; then
-#		emacsclient -a "$emacs" --no-wait $@ &
-#	fi
-#}
+alias e='_emacsclient'
+alias emacs='_emacsclient'
+alias emacsclient='_emacsclient'
+
+function _emacsclient() {
+  local server_dir="$HOME/.emacs.d/server"
+  local server_name="$$"
+  local socket_name="$server_dir/$server_name"
+
+  if [ -e "$socket_name" ]; then
+    local emacs=`type -p emacsclient | sed 's|emacsclient is ||g'`
+    "$emacs" --socket-name "$socket_name" --no-wait "$@" &
+    fg _emacsclient
+  else
+    local emacs=`type -p emacs | sed 's|emacs is ||g'`
+    "$emacs" -nw --eval "(setq server-name \"$server_name\")" --eval "(server-start)" "$@"
+  fi
+}
