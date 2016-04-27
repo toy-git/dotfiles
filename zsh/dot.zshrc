@@ -1,10 +1,3 @@
-this="${BASH_SOURCE:-${(%):-%N}}"
-while [ -h "$this" ]
-do
-	this=`readlink "$this"`
-done
-this_dir="$(cd "$(dirname "$this")"; pwd)"
-
 ############################################
 # GENERAL
 export EDITOR=emacs       # エディタをemacsに設定
@@ -110,11 +103,30 @@ esac
 
 ############################################
 # COMMAND
-
 alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -a -l'
 
+alias od='od -tx1 -Ax'
+
+#
+# cscope用のデータベースファイルを生成する
+#
+alias create-cscope-database='_create_cscope_database'
+function _create_cscope_database() {
+  rm -f cscope.files  cscope .in.out  cscope.out  cscope.po.out
+  find . \
+    -type d -name .git -prune -o \
+    -type d -name .hg -prune -o \
+    -type d -name .bzr -prune -o \
+    -type d -name .svn -prune -o \
+    -regex ".*\.[chxsCHXS\(cpp\)\(cxx\)]$" -type f -print >  cscope.files
+  cscope -bqk
+}
+
+#
+# 全てpopdする
+#
 alias popdall='_popdall'
 function _popdall () {
   for i in `dirs -v | sed 's|\([0-9]*\).*|\1|g'`
@@ -144,10 +156,11 @@ function _tmux () {
   fi
 }
 
-# 起動済みのemacsを使ってファイルを開く
+# 起動済みのemacsを使ってファイルを開く（shellプロセス単位）
 # emacs設定に下記の記載が必要
 # ----
 # (require 'server)
+# (setq server-socket-dir "~/.emacs.d/server")
 # ----
 alias e='_emacsclient'
 alias emacs='_emacsclient'

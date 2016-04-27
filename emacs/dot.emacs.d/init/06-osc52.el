@@ -9,7 +9,7 @@
 		(process-send-eof proc))))
   
   (setq interprogram-cut-function 'paste-to-osx)
-  ;(setq interprogram-paste-function 'copy-from-osx)
+  (setq interprogram-paste-function 'copy-from-osx)
   )
 
 (when linux-p ;[linux] https://gist.github.com/AlexCharlton/cc82001c407786f7c1f7
