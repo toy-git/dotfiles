@@ -113,9 +113,10 @@ alias ........="cd ../../../../../../../.."
 alias .........="cd ../../../../../../../../.."
 alias ..........="cd ../../../../../../../../../.."
 
-alias ll='ls -l'
-alias la='ls -a'
-alias lla='ls -a -l'
+alias ls='ls --color=auto'
+alias ll='ls -l --color=auto'
+alias la='ls -a --color=auto'
+alias lla='ls -a -l --color=auto'
 
 alias od='od -Ax'
 alias od1='od -tx1 -Ax'
