@@ -113,10 +113,20 @@ alias ........="cd ../../../../../../../.."
 alias .........="cd ../../../../../../../../.."
 alias ..........="cd ../../../../../../../../../.."
 
-alias ls='ls --color=auto'
-alias ll='ls -l --color=auto'
-alias la='ls -a --color=auto'
-alias lla='ls -a -l --color=auto'
+case ${OSTYPE} in
+  darwin*)
+  # setting for mac
+  LS_OPT_COLOR=""
+  ;;
+  linux*)
+  # setting for linux
+  LS_OPT_COLOR="--color=auto"
+  ;;
+esac
+alias ls='ls $LS_OPT_COLOR'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -a -l'
 
 alias od='od -Ax'
 alias od1='od -tx1 -Ax'
