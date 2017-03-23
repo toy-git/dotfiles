@@ -1,12 +1,12 @@
 #!/bin/sh
-E=echo
+E=
 this_dir="$(cd $(dirname $0); pwd)"
 . "$this_dir/../functions"
 
 #
 # create symlink
 #
-gitconfig="$home_dir/.gitconfig"
+gitconfig="$HOME/.gitconfig"
 pushd "$HOME" >/dev/null
 if [ -e "$gitconfig" ]; then
   echo "move: $gitconfig -> ${gitconfig}.orig"

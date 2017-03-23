@@ -140,12 +140,15 @@ alias od8='od -tx8 -Ax'
 alias mkcscope-files='_create_cscope_database'
 function _create_cscope_database() {
   rm -f cscope.files  cscope .in.out  cscope.out  cscope.po.out
-  find "$@" \
-    -type d -name .git -prune -o \
-    -type d -name .hg -prune -o \
-    -type d -name .bzr -prune -o \
-    -type d -name .svn -prune -o \
-    -regex ".*\.[chxsCHXS\(cpp\)\(cxx\)]$" -type f -print >  cscope.files
+  for x in "$@"
+  do
+    find "$@" \
+      -type d -name .git -prune -o \
+      -type d -name .hg -prune -o \
+      -type d -name .bzr -prune -o \
+      -type d -name .svn -prune -o \
+      -regex ".*\.[chxsCHXS\(cpp\)\(cxx\)]$" -type f -print >>  cscope.files
+  done
   cscope -bqk
 }
 
