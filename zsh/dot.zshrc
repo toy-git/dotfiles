@@ -104,6 +104,8 @@ esac
 ############################################
 # COMMAND
 
+alias .="cd .."
+alias ..="cd ../.."
 alias ...="cd ../../.."
 alias ....="cd ../../../.."
 alias .....="cd ../../../../.."
@@ -142,7 +144,8 @@ function _create_cscope_database() {
   rm -f cscope.files  cscope .in.out  cscope.out  cscope.po.out
   for x in "$@"
   do
-    find "$@" \
+   local d=`readlink -f "$x"`
+   find "$d" \
       -type d -name .git -prune -o \
       -type d -name .hg -prune -o \
       -type d -name .bzr -prune -o \
