@@ -94,7 +94,7 @@ SPROMPT=$tmp_sprompt  # スペル訂正用プロンプト
 
 ### Title (user@hostname) ###
 case "${TERM}" in
-kterm*|xterm*|)
+kterm*|xterm*)
   precmd() {
     echo -ne "\033]0;${USER}@${HOST%%.*}\007"
   }
@@ -103,24 +103,55 @@ esac
 
 ############################################
 # COMMAND
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+alias .......="cd ../../../../../.."
+alias ........="cd ../../../../../../.."
+alias .........="cd ../../../../../../../.."
+alias ..........="cd ../../../../../../../../.."
+alias ...........="cd ../../../../../../../../../.."
+
+case ${OSTYPE} in
+  darwin*)
+  # setting for mac
+  LS_OPT_COLOR=""
+  ;;
+  linux*)
+  # setting for linux
+  LS_OPT_COLOR="--color=auto"
+  ;;
+esac
+alias ls='ls $LS_OPT_COLOR'
 alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -a -l'
 
-alias od='od -tx1 -Ax'
+alias od='od -Ax'
+alias od1='od -tx1 -Ax'
+alias od2='od -tx2 -Ax'
+alias od4='od -tx4 -Ax'
+alias od8='od -tx8 -Ax'
 
 #
 # cscope用のデータベースファイルを生成する
 #
-alias create-cscope-database='_create_cscope_database'
+alias mkcscope-files='_create_cscope_database'
 function _create_cscope_database() {
   rm -f cscope.files  cscope .in.out  cscope.out  cscope.po.out
-  find . \
-    -type d -name .git -prune -o \
-    -type d -name .hg -prune -o \
-    -type d -name .bzr -prune -o \
-    -type d -name .svn -prune -o \
-    -regex ".*\.[chxsCHXS\(cpp\)\(cxx\)]$" -type f -print >  cscope.files
+  for x in "$@"
+  do
+   local d=`readlink -f "$x"`
+   find "$d" \
+      -type d -name .git -prune -o \
+      -type d -name .hg -prune -o \
+      -type d -name .bzr -prune -o \
+      -type d -name .svn -prune -o \
+      -regex ".*\.[chxsCHXS\(cpp\)\(cxx\)]$" -type f -print >>  cscope.files
+  done
   cscope -bqk
 }
 

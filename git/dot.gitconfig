@@ -1,2 +1,16 @@
+[core]
+	excludesfile = ~/.gitignore  # globalな.gitignoreの指定
+	#autocrlf = input             # CRLFを自動変換
+
+[color]
+	status = auto
+	diff = auto
+	branch = auto
+	interactive = auto
+	grep = auto
+
 [alias]
 	root = rev-parse --show-toplevel
+	parent = rev-parse HEAD
+	glog = log --oneline --graph --decorate
+	out = "!git log origin/`git rev-parse --abbrev-ref HEAD`...`git rev-parse --abbrev-ref HEAD`"
