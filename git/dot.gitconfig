@@ -11,6 +11,22 @@
 
 [alias]
 	root = rev-parse --show-toplevel
-	parent = rev-parse HEAD
 	glog = log --oneline --graph --decorate
-	out = "!git log origin/`git rev-parse --abbrev-ref HEAD`...`git rev-parse --abbrev-ref HEAD`"
+	log-full = log --pretty=full
+
+[user]
+#	email = @EMAIL@
+#	name = @NAME@
+
+
+# [tips]
+# ・authorとcommiterを直す方法
+#   configへ設定/確認、歴史書換え。
+#   commit --amend の -C HEAD はログメッセージは変更ない事を指示。
+#
+#     % git config --global user.name  ${name}
+#     % git config --global user.email ${e-mail}
+#     % git config --global --list
+#     % git rebase -i origin/master
+#     % git commit --amend --reset-author -C HEAD
+#
