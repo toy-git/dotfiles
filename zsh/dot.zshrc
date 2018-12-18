@@ -158,7 +158,13 @@ function _create_cscope_database() {
       -type d -name .hg -prune -o \
       -type d -name .bzr -prune -o \
       -type d -name .svn -prune -o \
-      -regex ".*\.[chxsCHXS\(cpp\)\(cxx\)]$" -type f -print >>  cscope.files
+      -type f -iname \*.c -print -o \
+      -type f -iname \*.h -print -o \
+      -type f -iname \*.s -print -o \
+      -type f -iname \*.x -print -o \
+      -type f -iname \*.cc -print -o \
+      -type f -iname \*.cpp -print -o \
+      -type f -iname \*.cxx -print >>  cscope.files
   done
   cscope -bqk
 }
@@ -172,6 +178,7 @@ function _popdall () {
   do
     popd >/dev/null 2>&1
   done
+  pwd
 }
 
 # tmux環境をローカルに入れた場合の設定
