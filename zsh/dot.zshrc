@@ -6,6 +6,8 @@ export LC_ALL=en_US.UTF-8 # 文字コードをUTF-8に設定
 export KCODE=u            # KCODEにUTF-8を設定
 export AUTOFEATURE=true   # autotestでfeatureを動かす
 
+export PATH=$HOME/.git.d/bin:$PATH
+
 bindkey -e               # キーバインドをemacsモードに設定
 
 setopt no_beep           # ビープ音を鳴らさないようにする

@@ -13,5 +13,6 @@ if [ -e "$gitconfig" ]; then
   $E mv "$gitconfig" "${gitconfig}.orig"
 fi
 $E ln -s "$git_dot_gitconfig" ".gitconfig"
-popd >/dev/null
 
+ln -s "$this_dir" .git.d
+popd >/dev/null

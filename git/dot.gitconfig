@@ -11,7 +11,8 @@
 
 [alias]
 	root = rev-parse --show-toplevel
-	glog = log --oneline --graph --decorate
+	glog = log --oneline --graph --decorate #グラフログ
+	hlog = log --pretty=format:"%H"  #ハッシュ値のみのログ
 	log-full = log --pretty=full
 
 [user]
