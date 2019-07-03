@@ -1,3 +1,10 @@
+#
+#  $ wget https://sourceforge.net/projects/zsh/files/zsh/5.6.2/zsh-5.6.2.tar.xz/download -O zsh-5.6.2.tar.xz
+#  $ tar vxJf zsh-5.6.2.tar.xz
+#  $ cd zsh-5.6.2
+#  $ ./configure --prefix=$HOME/usr/local --enable-multibyte --enable-locale
+#  $ make && make install
+#
 ############################################
 # GENERAL
 export EDITOR=emacs       # エディタをemacsに設定
@@ -5,6 +12,8 @@ export LANG=en_US.UTF-8   # 文字コードをUTF-8に設定
 export LC_ALL=en_US.UTF-8 # 文字コードをUTF-8に設定
 export KCODE=u            # KCODEにUTF-8を設定
 export AUTOFEATURE=true   # autotestでfeatureを動かす
+
+export PATH=$HOME/.git.d/bin:$PATH
 
 bindkey -e               # キーバインドをemacsモードに設定
 
@@ -104,16 +113,20 @@ esac
 ############################################
 # COMMAND
 
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ......="cd ../../../../.."
-alias .......="cd ../../../../../.."
-alias ........="cd ../../../../../../.."
-alias .........="cd ../../../../../../../.."
-alias ..........="cd ../../../../../../../../.."
-alias ...........="cd ../../../../../../../../../.."
+function _cdpwd() {
+  cd $1
+  pwd
+}
+alias ..="_cdpwd .."
+alias ...="_cdpwd ../.."
+alias ....="_cdpwd ../../.."
+alias .....="_cdpwd ../../../.."
+alias ......="_cdpwd ../../../../.."
+alias .......="_cdpwd ../../../../../.."
+alias ........="_cdpwd ../../../../../../.."
+alias .........="_cdpwd ../../../../../../../.."
+alias ..........="_cdpwd ../../../../../../../../.."
+alias ...........="_cdpwd ../../../../../../../../../.."
 
 case ${OSTYPE} in
   darwin*)
@@ -135,6 +148,10 @@ alias od1='od -tx1 -Ax'
 alias od2='od -tx2 -Ax'
 alias od4='od -tx4 -Ax'
 alias od8='od -tx8 -Ax'
+
+# exclude repository
+alias grep-repo='grep -Ern --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.hg --exclude-dir=.svn --exclude-dir=.bzr --exclude-from=cscope.files --exclude-from=cscope.in.out --exclude-from=cscope.out --exclude-from=cscope.po.out'
+alias diff-repo='diff -Nurp --exclude=.git --exclude=.hg --exclude=.hg --exclude=.svn --exclude=.bzr --exclude=cscope.files --exclude=cscope.in.out --exclude=cscope.out --exclude=cscope.po.out'
 
 #
 # cscope用のデータベースファイルを生成する
@@ -208,13 +225,35 @@ function _emacsclient() {
   local server_dir="$HOME/.emacs.d/server"
   local server_name="$$"
   local socket_name="$server_dir/$server_name"
+  local args=()
+
+  for arg in "$@"
+  do
+    # /path/to/file:20 や /path/to/file:+20 を +20 /path/to/file に変換
+    echo $arg | grep -Eq "^.*:[+]*[0-9]+$"
+    if [ $? -eq 0 ]; then
+      local line=`echo $arg | sed -E "s/^.*:[+]*//g"`
+      local file=`echo $arg | sed -E "s/:[+]*[0-9]*$//g"`
+      args=($args +$line "$file")
+      continue
+    fi
+
+    # +NUMBERを判定(これは'で囲みたくない)
+    echo $arg | grep -Eq "^+[0-9]+$"
+    if [ $? -eq 0 ]; then
+      args=($args $arg)
+      continue
+    fi
+    #その他はファイルパスのはず
+    args=($args "$arg")
+  done
 
   if [ -e "$socket_name" ]; then
     local emacs=`type -p emacsclient | sed 's|emacsclient is ||g'`
-    "$emacs" --socket-name "$socket_name" --no-wait "$@" &
+    "$emacs" --socket-name "$socket_name" --no-wait ${args[@]} &
     fg _emacsclient
   else
     local emacs=`type -p emacs | sed 's|emacs is ||g'`
-    "$emacs" -nw --eval "(setq server-name \"$server_name\")" --eval "(server-start)" "$@"
+    "$emacs" -nw --eval "(setq server-name \"$server_name\")" --eval "(server-start)" ${args[@]}
   fi
 }
