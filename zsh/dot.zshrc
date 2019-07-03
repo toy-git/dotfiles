@@ -1,3 +1,10 @@
+#
+#  $ wget https://sourceforge.net/projects/zsh/files/zsh/5.6.2/zsh-5.6.2.tar.xz/download -O zsh-5.6.2.tar.xz
+#  $ tar vxJf zsh-5.6.2.tar.xz
+#  $ cd zsh-5.6.2
+#  $ ./configure --prefix=$HOME/usr/local --enable-multibyte --enable-locale
+#  $ make && make install
+#
 ############################################
 # GENERAL
 export EDITOR=emacs       # エディタをemacsに設定
