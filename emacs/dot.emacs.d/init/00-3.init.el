@@ -41,7 +41,7 @@
                              activate)
   "Turn files like file.cpp:14 into file.cpp and going to the 14-th line."
   (save-match-data
-    (let* ((matched (string-match "^\\(.*\\):\\([0-9]+\\):?$" filename))
+    (let* ((matched (string-match "^\\(.*\\):[+]*\\([0-9]+\\):?$" filename))
            (line-number (and matched
                              (match-string 2 filename)
                              (string-to-number (match-string 2 filename))))

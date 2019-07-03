@@ -222,11 +222,11 @@ function _emacsclient() {
 
   for arg in "$@"
   do
-    # /path/to/file:20 を +20 /path/to/file に変換
-    echo $arg | grep -Eq "^.*:[0-9]+$"
+    # /path/to/file:20 や /path/to/file:+20 を +20 /path/to/file に変換
+    echo $arg | grep -Eq "^.*:[+]*[0-9]+$"
     if [ $? -eq 0 ]; then
-      local line=`echo $arg | sed -E "s/^.*://g"`
-      local file=`echo $arg | sed -E "s/:[0-9]*$//g"`
+      local line=`echo $arg | sed -E "s/^.*:[+]*//g"`
+      local file=`echo $arg | sed -E "s/:[+]*[0-9]*$//g"`
       args=($args +$line "$file")
       continue
     fi
