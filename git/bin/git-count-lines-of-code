@@ -1,0 +1,117 @@
+#!/bin/bash
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+cloc="$HOME/.git.d/git-tools/cloc/cloc"
+target_dir=`git rev-parse --show-toplevel`
+hash1=''
+hash2=''
+
+usage_exit()
+{
+    local exit_code=$1
+
+    echo "usage: ${0##*/} [-d <dir> | hash] [-- cloc_args]"
+    echo "     -d --target-dir : target directory."
+    echo "     hash            : caluculate git hash. specified in the following formats."
+    echo "                            hash"
+    echo "                            hash1..hash2 or hash1...hash2"
+    echo "                            hash1 hash2"
+    echo "     cloc_args       : argument for cloc"
+
+    exit $exit_code
+}
+
+declare -i argc=0
+declare -a argv=()
+while (( $# > 0 )); do
+    case "$1" in
+	# オプション終端
+	- | -- )
+	    shift
+	    argc+=$#
+	    argv+=("$@")
+	    break
+	    ;;
+
+	# ロングオプション
+	--* )
+	    __opt_name="${1#--}"
+	    __opt_name="${__opt_name%%=*}"
+
+	    __delim_by_space=true
+	    __opt_value=""
+	    if [[ "$1" = *=* ]]; then
+		__delim_by_space=false
+		__opt_value="${1#*=}"
+	    fi
+
+	    case "$__opt_name" in
+		'help')
+		    usage_exit 0
+		    ;;
+
+		'target-dir')
+		    target_dir="${__opt_value:-$2}"
+		    ($__delim_by_space) && shift
+		    ;;
+	    esac
+	    ;;
+
+	# ショートオプション
+	-* )
+	    for (( i=1; i < ${#1}; i++ )); do
+		__opt_name="${1:$i:1}"
+		case "$__opt_name" in
+		    'h')
+			usage_exit 0
+			;;
+
+		    'd')
+			target_dir="$2"
+			shift
+			;;
+		esac
+	    done
+	    ;;
+
+	# 実引数
+	*)
+	    # hash1..hash2
+	    if [[ "$1" = *..* ]] ||
+		   [[ "$1" = *...* ]] ; then
+		hash1=`echo "$1" | sed 's|\..*$||g'`
+		hash2=`echo "$1" | sed 's|^.*\.||g'`
+		# hash1
+	    elif [[ -z "$2" ]] ||
+		     [[ "$2" = *-* ]] ; then
+		hash1="$1"
+		hash2=''
+		# hash1 hash2
+	    else
+		hash1="$1"
+		hash2="$2"
+		shift
+	    fi
+	    ;;
+    esac
+    shift
+done
+
+
+if [ -n "$hash1" ]; then
+    if [ -n "$hash2" ]; then
+	"$cloc" --diff "$hash1" "$hash2" $argv
+	ret=$?
+    else
+	"$cloc" "$hash1" $argv
+	ret=$?
+    fi
+elif [ -n "$target_dir" ]; then
+    "$cloc" "$target_dir" $argv
+    ret=$?
+else
+    "$cloc" $argv
+    ret=$?
+fi
+exit $ret

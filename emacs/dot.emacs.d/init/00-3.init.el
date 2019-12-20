@@ -9,7 +9,7 @@
 ;;
 (require 'server)
 (setq server-socket-dir "~/.emacs.d/server")
-;(unless (server-running-p)  
+;(unless (server-running-p)
 ;  (server-start))   <= サーバ名をユニークにするため。起動時の引き数で --eval してstart-serverする。.zshrc参照。
 
 ;;
@@ -51,3 +51,20 @@
         ;; goto-line is for interactive use
         (goto-char (point-min))
         (forward-line (1- line-number))))))
+
+;;
+;; 保存時に行末の空白、TABを削除
+;;
+;; 除外したい拡張子
+(setq delete-trailing-whitespace-exclude-patterns
+;;	  (list "\\.md$")
+	  (list "\\.c$" "\\.h$" "\\.md$" "\\.patch$")
+)
+
+(require 'cl)
+(defun delete-trailing-whitespace-with-exclude-pattern ()
+  (interactive)
+  (cond ((equal nil (loop for pattern in delete-trailing-whitespace-exclude-patterns
+                          thereis (string-match pattern buffer-file-name)))
+         (delete-trailing-whitespace))))
+(add-hook 'before-save-hook 'delete-trailing-whitespace-with-exclude-pattern)

@@ -2,6 +2,9 @@
 	excludesfile = ~/.gitignore  # globalな.gitignoreの指定
 	#autocrlf = input             # CRLFを自動変換
 
+[diff]
+	algorithm = histogram
+
 [color]
 	status = auto
 	diff = auto
@@ -11,14 +14,21 @@
 
 [alias]
 	root = rev-parse --show-toplevel
-	glog = log --oneline --graph --decorate
+	glog = log --oneline --graph --decorate #グラフログ
+
+	shallow-clone = clone --depth=1
 	hlog = log --pretty=format:"%H"  #ハッシュ値のみのログ
 	log-full = log --pretty=full
+
+	cloc = count-lines-of-code
+	ls-change = ls-gerrit-change
+
+[include]
+    path = ~/.gitconfig.local
 
 [user]
 #	email = @EMAIL@
 #	name = @NAME@
-
 
 # [tips]
 # ・authorとcommiterを直す方法
@@ -31,3 +41,5 @@
 #     % git rebase -i origin/master
 #     % git commit --amend --reset-author -C HEAD
 #
+# ・format-patchを順序よく
+#     % git format-patch --topo-order <commit1>..<commit2> -o <outputdir>

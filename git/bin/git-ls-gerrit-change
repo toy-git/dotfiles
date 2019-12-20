@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 #
 # Print GerritHub changes.
 #
@@ -8,13 +8,12 @@
 #    364989936441ecea7063a2ba19320c139030hoge       refs/changes/yy/zzzzzz/2    <=latest change
 #    9b54310ee03363de433ca79bb5f523ac2f52hoge       refs/changes/yy/zzzzzz/meta
 #    $ git fetch ${gerrithub} ${refs/changes/yy/zzzzzz/2}
-#    $ git diff HEAD FETCH_HEAD | tee ~/a.patch   <=check diff
+#    $ git diff HEAD FETCH_HEAD | tee ~/a.patch   <=check diff(コミットメッセージの差分はこれでは確認できないので注意)
 #    $ patch -p1 < ~/a.patch
 #    $ git add -p
 #    $ git commit --amend -C HEAD
 #    $ git rebase --continue
 #
-
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 

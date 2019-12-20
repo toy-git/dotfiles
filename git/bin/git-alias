@@ -1,0 +1,19 @@
+#!/bin/bash
+#   git alias で一覧表示
+#   git alias <alias command name> で alias 設定表示
+if [ -z "$1" ]; then
+    loop=
+    for k in `git config --get-regexp "^alias\\." | sort | sed -e 's/^alias\.//g' | sed -e 's/ .*$//g'`
+    do
+        loop="${loop}1"
+        if [ ${#loop} -lt 5 ]; then
+            echo -ne "$k\t"
+        else
+            echo -e "$k"
+            loop=
+        fi
+    done
+    echo
+else
+    git config --list | grep "^alias\\.$1=" | sed -e "s/^alias\\.$1=//"
+fi

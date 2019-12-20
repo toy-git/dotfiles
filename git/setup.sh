@@ -16,3 +16,12 @@ $E ln -s "$git_dot_gitconfig" ".gitconfig"
 
 ln -s "$this_dir" .git.d
 popd >/dev/null
+
+#
+# download Count Lines of Code.
+#
+git_tools_dir="$this_dir/git-tools"
+mkdir -p "$git_tools_dir"
+pushd "$git_tools_dir" >/dev/null
+git clone https://github.com/toy-git/cloc.git cloc
+popd >/dev/null

@@ -1,0 +1,27 @@
+
+======================
+ キーワードハイライト
+======================
+M-x highlight-phrase を実行してキーワードを入力。
+どのfaceを使うか聞かれるので、そのままリターンキー押下でいい。
+face の種類は M-x list-faces-display で確認できる。
+
+
+色々なパターン
+--------------
+正規表現でキーワード指定    highlight-regexp
+マッチした行全体を強調表示  highlight-lines-matching-regexp
+ハイライト止める            unhighlight-regexp
+
+
+いつも強調表示するには？
+------------------------
+(add-hook 'org-mode-hook
+  (lambda ()
+    (highlight-phrase "KEYWORD"))
+
+font-lockを使って実現することもできます。
+# 実際hi-lockもfont-lockを使っている
+
+ ( font-lock-add-keywords モード
+    '(("正規表現" . face名)))
