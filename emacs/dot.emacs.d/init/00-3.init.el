@@ -12,12 +12,18 @@
 ;(unless (server-running-p)
 ;  (server-start))   <= サーバ名をユニークにするため。起動時の引き数で --eval してstart-serverする。.zshrc参照。
 
-;;
-;; C-Ret で矩形選択
-;; 詳しいキーバインド操作：http://dev.ariel-networks.com/articles/emacs/part5/
+;; 矩形選択
+;;   C-x SPC で矩形選択
+;;   M-p 矩形の幅を固定
+;;   M-b 空白文字で埋める。 open-rectangle と同等
+;;   M-s 文字列で置き換える。 string-rectangle と同等
+;;   M-f 1種類の文字で埋める。 string-rectangle で1文字指定したときと同等
+;;   M-i 矩形領域内の数字をインクリメントする
+;;   M-n 矩形領域を連番で埋める。フォーマット指定可
 ;;
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
+(define-key global-map (kbd "C-x SPC") 'cua-set-rectangle-mark)
 
 ;;
 ;; バッファ自動再読み込み

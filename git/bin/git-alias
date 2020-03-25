@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #   git alias で一覧表示
 #   git alias <alias command name> で alias 設定表示
 if [ -z "$1" ]; then

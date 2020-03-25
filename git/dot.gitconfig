@@ -40,6 +40,8 @@
 #     % git config --global --list
 #     % git rebase -i origin/master
 #     % git commit --amend --reset-author -C HEAD
+#       [時刻まで更新するときは下記] 結果は git log --pretty=fuller で確認できる
+#       % git commit --amend --reset-author -C HEAD --date="`date`"
 #
 # ・format-patchを順序よく
 #     % git format-patch --topo-order <commit1>..<commit2> -o <outputdir>

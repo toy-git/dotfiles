@@ -25,4 +25,5 @@ if [ -e "$tmux_dir" ]; then
 fi
 pushd "$HOME" >/dev/null
 $E ln -s "$tmux_dot_tmux_dir" ".tmux"
+$E mkdir -p ".tmux/log"
 popd >/dev/null

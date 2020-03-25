@@ -149,9 +149,18 @@ alias od2='od -tx2 -Ax'
 alias od4='od -tx4 -Ax'
 alias od8='od -tx8 -Ax'
 
+alias objdump='objdump -rDlS --prefix-address'
+
 # exclude repository
 alias grep-repo='grep -Ern --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.hg --exclude-dir=.svn --exclude-dir=.bzr --exclude-from=cscope.files --exclude-from=cscope.in.out --exclude-from=cscope.out --exclude-from=cscope.po.out'
 alias diff-repo='diff -Nurp --exclude=.git --exclude=.hg --exclude=.hg --exclude=.svn --exclude=.bzr --exclude=cscope.files --exclude=cscope.in.out --exclude=cscope.out --exclude=cscope.po.out'
+
+# エスケープカラーシーケンスを除去
+# case ${OSTYPE}
+# Linuxの場合
+#   linux*)  alias strip_color='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})*)?m//g" | col'
+# MacOSの場合
+#   darwin*) alias strip_color='sed -E "s/"$'\E'"\[([0-9]{1,2}(;[0-9]{1,2})*)?m//g" | col'
 
 #
 # cscope用のデータベースファイルを生成する
@@ -159,22 +168,38 @@ alias diff-repo='diff -Nurp --exclude=.git --exclude=.hg --exclude=.hg --exclude
 alias mkcscope-files='_create_cscope_database'
 function _create_cscope_database() {
   rm -f cscope.files  cscope .in.out  cscope.out  cscope.po.out
-  for x in "$@"
-  do
-   local d=`readlink -f "$x"`
-   find "$d" \
-      -type d -name .git -prune -o \
-      -type d -name .hg -prune -o \
-      -type d -name .bzr -prune -o \
-      -type d -name .svn -prune -o \
-      -type f -iname \*.c -print -o \
-      -type f -iname \*.h -print -o \
-      -type f -iname \*.s -print -o \
-      -type f -iname \*.x -print -o \
-      -type f -iname \*.cc -print -o \
-      -type f -iname \*.cpp -print -o \
-      -type f -iname \*.cxx -print >>  cscope.files
-  done
+
+  if [ $# -eq 0 ]; then
+      find . \
+        -type d -name .git -prune -o \
+        -type d -name .hg -prune -o \
+        -type d -name .bzr -prune -o \
+        -type d -name .svn -prune -o \
+        -type f -iname \*.c -print -o \
+        -type f -iname \*.h -print -o \
+        -type f -iname \*.s -print -o \
+        -type f -iname \*.x -print -o \
+        -type f -iname \*.cc -print -o \
+        -type f -iname \*.cpp -print -o \
+        -type f -iname \*.cxx -print >>  cscope.files
+  else
+    for x in "$@"
+    do
+      local d=`readlink -f "$x"`
+      find "$d" \
+        -type d -name .git -prune -o \
+        -type d -name .hg -prune -o \
+        -type d -name .bzr -prune -o \
+        -type d -name .svn -prune -o \
+        -type f -iname \*.c -print -o \
+        -type f -iname \*.h -print -o \
+        -type f -iname \*.s -print -o \
+        -type f -iname \*.x -print -o \
+        -type f -iname \*.cc -print -o \
+        -type f -iname \*.cpp -print -o \
+        -type f -iname \*.cxx -print >>  cscope.files
+    done
+  fi
   cscope -bqk
 }
 

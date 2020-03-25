@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
@@ -98,13 +98,15 @@ while (( $# > 0 )); do
     shift
 done
 
-
 if [ -n "$hash1" ]; then
     if [ -n "$hash2" ]; then
+	hash1=`git log --pretty=format:%H -1 "$hash1"`
+	hash2=`git log --pretty=format:%H -1 "$hash2"`
 	"$cloc" --diff "$hash1" "$hash2" $argv
 	ret=$?
     else
-	"$cloc" "$hash1" $argv
+	hash1=`git log --pretty=format:%H -1 "$hash1"`
+	"$cloc" --diff "$hash1" $argv
 	ret=$?
     fi
 elif [ -n "$target_dir" ]; then
