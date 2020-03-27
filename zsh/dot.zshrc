@@ -304,4 +304,18 @@ function tarvxJf()
   xz -dkcq --threads=0 "$file" | tar vxf -
 }
 
+function encryption()
+{
+  local in="$1"
+  local out="$2"
+  openssl aes-256-cbc -e -in "$in" -out "$out"
+}
+
+function decryption()
+{
+  local in="$1"
+  local out="$2"
+  openssl aes-256-cbc -d -in "$in" -out "$out"
+}
+
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local

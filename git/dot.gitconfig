@@ -22,6 +22,7 @@
 
 	cloc = count-lines-of-code
 	ls-change = ls-gerrit-change
+	sync-upstream = synchronize-upstream
 
 [include]
     path = ~/.gitconfig.local

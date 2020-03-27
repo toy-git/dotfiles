@@ -1,0 +1,185 @@
+#!/usr/bin/env bash
+# 子リモートリポジトリの状態を親リモートリポジトリに追従させる。
+# 子リモートリポジトリで保護したいブランチはprotected_branchで列挙する。
+#
+# [usage]
+#   % git clone child work
+#   % cd work
+#   % git remote add upstream ../parent
+#   % git remote -v
+#   origin /path/to/child (fetch)
+#   origin /path/to/child (push)
+#   upstream /path/to/parent (fetch)
+#   upstream /path/to/parent (push)
+#   % git fetch --all
+#   Fetching origin
+#   Fetching upstream
+#   (snip)
+#   % git sync-upstream
+#
+
+dry_run=1
+fail=0
+IFS=$'\n'
+
+#
+# 設定
+#
+
+# 親リモートリポジトリ名
+remote_parent=upstream
+
+# 子リモートリポジトリ名
+remote_child=origin
+
+# 保護リポジトリ名。改行区切りで列挙
+protected_branch=`cat <<"__EOL__"
+__EOL__`
+
+is_protected_branch()
+{
+    local branch="$1"
+    local protect_branches="$2"
+    local skip=0
+    local old_ifs=$IFS
+
+    IFS=$'\n'
+    branch=`echo $branch | xargs basename`
+    for p in $protect_branches
+    do
+	p=`echo $p | xargs basename`
+	if [ "$p" = "$branch" ]; then
+	    skip=1
+	    break
+	fi
+    done
+    IFS=$old_ifs
+    return $skip
+}
+
+if [ $dry_run -eq 0 ]; then
+    E=
+else
+    echo "*** dry run ***"
+    #E=:
+    E=echo
+fi
+
+#
+# 作業リポジトリの現在のブランチを
+# テンポラリブランチを作成してから削除
+#
+current_branch=`git branch | grep -E '^\* ' | sed 's|^\* *||g'`
+temp_branch=
+
+# ブランチ名の選択
+temp_branch_names=`cat <<__EOL__
+__git-sync-upstream-b2618a984sdf
+__git-sync-upstream-01d06cb2ktd5
+__git-sync-upstream-c78803ac9jbh
+__git-sync-upstream-3300e65e1yrv
+__git-sync-upstream-d82ac31bg0oa
+__EOL__`
+for t in $temp_branch_names
+do
+    git branch | grep -q "$t"
+    if [ $? -ne 0 ]; then
+	temp_branch="$t"
+	break
+    fi
+done
+
+# ブランチ作成
+if [ -z "$temp_branch" ]; then
+    fail=1
+else
+    echo "@@@ create temporary branch: '$temp_branch'"
+    $E git checkout -b "$temp_branch"
+    fail=`expr $fail \| $?`
+    $E git branch -D "$current_branch"
+    fail=`expr $fail \| $?`
+fi
+
+# エラーチェック
+if [ $fail -ne 0 ]; then
+    echo "error: create temporary branch."
+    exit 1
+fi
+protected_branch="$protected_branch
+$temp_branch"
+
+#
+# 子リモートブランチを全て削除(master, デフォルトブランチを除く)
+#
+default_child_banch=`git  branch -a | grep "[/]$remote_child/HEAD" | sed "s|.*-> *$remote_child/||g"`
+child_protected_branch="$protected_branch
+master
+development
+$default_child_banch"
+
+echo "@@@ delete child branche(s)."
+child_branches=`git branch -a | grep -E "[/]$remote_child/" | grep -v "$remote_child/HEAD"`
+for b in $child_branches
+do
+    b=`echo $b | xargs`
+    is_protected_branch "$b" "$child_protected_branch"
+    if [ $? -eq 0 ]; then
+	echo "delete       '$b'"
+	sb=`echo $b | xargs basename`
+	$E git push "$remote_child" :"$sb"
+	fail=`expr $fail \| $?`
+	if [ $fail -ne 0 ]; then
+	    echo "error: delete child branch: '$b'"
+	    exit 1
+	fi
+    else
+	echo "delete[skip] '$b'"
+    fi
+done
+
+#
+# 親リモートブランチをcheckoutして子リポジトリにpush(デフォルトブランチ除く)
+#
+echo "@@@ sync parent branche(s) to child."
+parent_branches=`git branch -a | grep -E "[/]$remote_parent/" | grep -v "$remote_parent/HEAD"`
+for b in $parent_branches
+do
+    b=`echo $b | xargs`
+    is_protected_branch "$b" "$protected_branch"
+    if [ $? -eq 0 ]; then
+	echo "sync       '$b' to '$remote_child'"
+	sb=`echo $b | xargs basename`
+	$E git checkout -b "$sb" "$b"
+	fail=`expr $fail \| $?`
+	if [ $fail -ne 0 ]; then
+	    echo "error: sync branch[checkout]: '$b'"
+	    exit 1
+	fi
+
+	$E git push "$remote_child" "$sb"
+	fail=`expr $fail \| $?`
+	if [ $fail -ne 0 ]; then
+	    echo "error: sync branch[push]: '$b'"
+	    exit 1
+	fi
+    else
+	echo "sync[skip] '$b'"
+    fi
+done
+
+#
+# テンポラリブランチを削除
+#
+echo "@@@ delete temporary branche."
+$E git branch -D "$temp_branch"
+fail=`expr $fail \| $?`
+if [ $fail -ne 0 ]; then
+    echo "error: delete temporary branch: '$temp_branch'"
+    exit 1
+fi
+
+if [ $dry_run -eq 0 ]; then
+    :
+else
+    echo "*** finish dry run ***"
+fi
