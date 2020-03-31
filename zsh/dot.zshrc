@@ -33,7 +33,12 @@ zstyle ':zle:*' word-chars " _-./;@"
 zstyle ':zle:*' word-style unspecified
 
 ### Complement ###
-autoload -U compinit; compinit # 補完機能を有効にする
+autoload -U compinit; compinit -u # 補完機能を有効にする
+                                  # macOS Catalina(10.15.4), zsh 5.7.1 (x86_64-apple-darwin19.0)で
+                                  # zsh 起動時にが下記警告を出すので抑止するために -u を付与して実行
+                                  # 権限が安全では無いらしい。compauditで該当ディレクトリをリスト表示可能。
+                                  #   zsh compinit: insecure directories, run compaudit for list.
+                                  #   Ignore insecure directories and continue [y] or abort compinit [n]?
 setopt auto_list               # 補完候補を一覧で表示する(d)
 setopt auto_menu               # 補完キー連打で補完候補を順に表示する(d)
 setopt list_packed             # 補完候補をできるだけ詰めて表示する

@@ -1,10 +1,11 @@
 ;; emacs-version predicates
 (setq emacs23-p (string-match "^23" emacs-version)
-	  emacs24-p (string-match "^24" emacs-version))
+	  emacs24-p (string-match "^24" emacs-version)
+	  emacs26-p (string-match "^26" emacs-version))
 
-;(unless (or emacs23-p emacs24-p)
+;(unless (or emacs23-p emacs24-p emacs26-p)
 ;   __emacs_version_error__)
-(unless (or emacs24-p) ;tmux対応のため一旦23を外す
+(unless (or emacs24-p emacs26-p) ;tmux対応のため一旦23を外す
    __emacs_version_error__)
 
 ;; system-type predicates

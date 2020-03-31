@@ -2,10 +2,12 @@
 (setq inhibit-startup-screen t)
 
 ;; ツールバー非表示
-(tool-bar-mode -1)
+(if (functionp 'tool-bar-mode)
+    (tool-bar-mode -1))
 
 ;; スクロールバー非表示
-(set-scroll-bar-mode nil)
+(if (functionp 'set-scroll-bar-mode)
+    (set-scroll-bar-mode nil))
 
 ;; タイトルバーにファイルのフルパス表示
 (setq frame-title-format
@@ -26,7 +28,11 @@
 (setq show-paren-style 'expression)
 
 ;; 括弧の範囲色
-(set-face-background 'show-paren-match-face "#500")
+(when emacs24-p
+  (set-face-background 'show-paren-match-face "#500"))
+(when emacs26-p
+  (set-face-attribute 'show-paren-match nil
+     :background "#500"))
 
 ;; 色の設定
 ;;  M-x list-colors-display で色見本
