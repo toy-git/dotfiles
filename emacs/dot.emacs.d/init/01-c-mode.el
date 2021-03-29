@@ -1,7 +1,8 @@
 (defun my-c-mode-hook ()
   (c-set-style "linux")
-  (setq tab-width 8)
-  (setq c-basic-offset tab-width))
+  (setq tab-width 4)
+  (setq c-basic-offset tab-width)
+  (setq indent-tabs-mode nil)) ;インデントをタブではなくスペースにする
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 
 ;;; Cにて1行80文字を超えるとハイライト

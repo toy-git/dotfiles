@@ -15,6 +15,7 @@
 [alias]
 	root = rev-parse --show-toplevel
 	glog = log --oneline --graph --decorate #グラフログ
+	gol = log --oneline --decorate --reverse #ログ逆順
 
 	shallow-clone = clone --depth=1
 	hlog = log --pretty=format:"%H"  #ハッシュ値のみのログ
@@ -46,3 +47,7 @@
 #
 # ・format-patchを順序よく
 #     % git format-patch --topo-order <commit1>..<commit2> -o <outputdir>
+#
+# ・HEADのブランチがmasterのどこから分岐しているか確認する
+#     % git show-branch --sha1-name master HEAD | tail -1
+#

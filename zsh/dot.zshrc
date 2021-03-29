@@ -5,6 +5,11 @@
 #  $ ./configure --prefix=$HOME/usr/local --enable-multibyte --enable-locale
 #  $ make && make install
 #
+#------------------------------------------------------
+#
+# 指定行範囲を抽出
+#  $ awk 'NR==36,NR==43' foo/bar.c
+#
 ############################################
 # GENERAL
 export EDITOR=emacs       # エディタをemacsに設定
